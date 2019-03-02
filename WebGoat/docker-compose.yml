@@ -4,7 +4,7 @@ services:
   webgoat:
     image: webgoat/webgoat-8.0
     ports:
-      - "8080:8080"
+      - "8000:8080"
       - "9001:9001"
     volumes:
       - .:/home/webgoat/.webgoat
