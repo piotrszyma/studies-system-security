@@ -37,6 +37,3 @@ def request(flow: http.HTTPFlow) -> None:
     if 'servers' in flow.request.url:
         perform_bulk_requests(flow.request)
         print(flow.request.url)
-
-def response(flow: http.HTTPFlow) -> None:
-    return
