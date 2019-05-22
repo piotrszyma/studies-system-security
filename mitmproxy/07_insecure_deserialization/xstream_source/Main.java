@@ -2,14 +2,14 @@ import java.io.File;
 import java.io.IOException;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.StaxDriver;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import contact.Contact;
 import contact.ContactImpl;
 
 public class Main {
   public static void main(String[] args) throws IOException {
-    XStream xstream = new XStream();
+    XStream xstream = new XStream(new DomDriver());
     ContactImpl contact = new ContactImpl();
     String contactXml = xstream.toXML(contact);
     ContactImpl contactFromXml = (ContactImpl) xstream.fromXML(contactXml);
@@ -22,13 +22,13 @@ public class Main {
             + "<command><string>calc.exe</string></command>" 
           + "</target>"
           + "<action>start</action>" 
-        + "<handler>" 
+        + "</handler>" 
       + "</dynamic-proxy>" 
     + "</contact.Contact>";
 
-    // String contactXmlNew = xstream.toXML(new ContactImpl());
-    // System.out.println(contactXmlNew);
+    String contactXmlNew = xstream.toXML(new ContactImpl());
+    System.out.println(contactXmlNew);
     Contact c = (Contact)xstream.fromXML(xml);
-    System.out.println(c.getFullname());
+    // System.out.println(c.getFullname());
   }
 }
