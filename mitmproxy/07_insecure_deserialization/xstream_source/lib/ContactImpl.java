@@ -1,4 +1,4 @@
-package contact;
+package lib;
 
 public class ContactImpl implements Contact {
   public int foo = 1;

