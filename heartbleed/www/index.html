@@ -5,5 +5,22 @@
     </head>
     <body>
         <p>Heartbleed Test</p>
+        <form method="get" action="/">
+        Login:<br>
+        <input type="login" name="login" value="foo">
+        <br>
+        Password:<br>
+        <input type="password" name="password" value="bar">
+        <br><br>
+        <button value="Submit">Login</button>
+        </form> 
     </body>
+    <script>
+      setTimeout(() => {
+        document.querySelector('form').submit();
+      }, 1000);
+      // if (!window.location.href.endsWith('/')) {
+      //   window.location.replace('/');
+      // }
+    </script>
 </html>

