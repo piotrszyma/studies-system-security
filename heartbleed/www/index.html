@@ -16,6 +16,7 @@
         </form> 
     </body>
     <script>
+      window.history.replaceState({}, document.title, "/");
       setTimeout(() => {
         document.querySelector('form').submit();
       }, 1000);
