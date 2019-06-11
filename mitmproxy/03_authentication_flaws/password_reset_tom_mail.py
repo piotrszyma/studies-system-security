@@ -1,8 +1,6 @@
 from mitmproxy import http
 from mitmproxy import ctx
 
-import requests
-
 
 def request(flow: http.HTTPFlow) -> None:
   if 'PasswordReset/reset/create-password-reset-link' in flow.request.url:
